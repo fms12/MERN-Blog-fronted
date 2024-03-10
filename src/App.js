@@ -1,56 +1,65 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './App.css';
+import Login from './features/auth/components/Login';
+import SignUp from './features/auth/components/SignUp';
+import PageNotFound from './pages/PageNotFound';
+import HomeScreen from './pages/HomeScreen';
+import LoggedNavBar from './features/navbar/LoggedNavBar';
+import Example from './Example';
+import UserProfile from './features/user/components/UserProfile';
+import Setting from './features/user/components/Setting';
+import CreatePost from './features/post/components/CreatePost';
+import PostDetails from './features/post/components/PostDetails';
 
+const router = createBrowserRouter([
+  {
+    path:"/",
+    element: <HomeScreen />
+  },
+  {
+    path:"/create-post",
+    element: <CreatePost />
+  },
+  {
+    path:"/post",
+    element: <PostDetails />
+  },
+  {
+    path:"/global",
+    element: <LoggedNavBar />
+  },
+
+  {
+    path :"/login",
+    element: <Login />
+  },
+  {
+    path: "/signup",
+    element: <SignUp />
+  },
+  {
+    path: "/profile",
+    element: <UserProfile />
+  },
+  {
+    path: "/setting",
+    element: <Setting />
+  },
+  {
+    path: "/ex",
+    element: <Example />
+  },
+  
+  {
+    path: "*",
+    element:<PageNotFound />
+  }
+]
+ );
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <RouterProvider router={router}/>
     </div>
   );
 }
