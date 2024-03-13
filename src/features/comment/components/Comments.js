@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCommentBySlugAsync, selectAllComments } from "../commentSlice";
 import { useParams } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import { deepPurple } from "@mui/material/colors";
 
 function Comments() {
   const comments = useSelector(selectAllComments);
@@ -20,11 +22,21 @@ function Comments() {
               <footer className="flex justify-between items-center mb-2">
                 <div className="flex items-center">
                   <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
-                    <img
-                      className="mr-2 w-10 h-10 rounded-full border text-[10px] text-center border-white"
-                      src={comment?.user?.profilePicture}
-                      alt={comment?.user?.name}
-                    />
+                    {comment?.user?.profilePicture ? (
+                      <img
+                        className="mr-2 w-10 h-10 rounded-full border text-[10px] text-center border-white"
+                        src={comment?.user?.profilePicture}
+                        alt={comment?.user?.name}
+                      />
+                    ) : (
+                      <Avatar
+                        alt={comment?.user?.name}
+                        style={{
+                          marginRight: "8px",
+                          backgroundColor: "#1d4ed8",
+                        }}
+                      />
+                    )}
                     {comment?.user?.name}
                   </p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -33,11 +45,14 @@ function Comments() {
                       dateTime="2022-02-08"
                       title="February 8th, 2022"
                     >
-                      {new Date(comment?.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
+                      {new Date(comment?.createdAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        }
+                      )}
                     </time>
                   </p>
                 </div>
