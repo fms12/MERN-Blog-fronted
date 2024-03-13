@@ -20,18 +20,31 @@ function ProfileSetting() {
       setValue("bio", userInfo.bio);
       setValue("name", userInfo.name);
     }
-  }, [userInfo,setValue]);
+  }, [userInfo, setValue]);
+  const onSubmit = (data) => {
+    // Create a new object that only includes fields that have changed
+    const changedFields = {};
+    if (data.username !== userInfo.username) {
+      changedFields.username = data.username;
+    }
+    if (data.bio !== userInfo.bio) {
+      changedFields.bio = data.bio;
+    }
+    if (data.name !== userInfo.name) {
+      changedFields.name = data.name;
+    }
+
+    // Only dispatch the update action if there are changed fields
+    if (Object.keys(changedFields).length > 0) {
+      dispatch(updateUserAsync(changedFields));
+    }
+  };
   return (
     <section>
       <form
         className="divide-y divide-gray-200 lg:col-span-9"
         noValidate
-        onSubmit={handleSubmit((data) => {
-          const userUpdatedInfo = { ...data };
-          console.log(userUpdatedInfo);
-          dispatch(updateUserAsync(userUpdatedInfo));
-          // console.log(data);
-        })}
+        onSubmit={handleSubmit(onSubmit)}
       >
         {/* Profile section */}
         <div className="px-4 py-6 sm:p-6 lg:pb-8 border bg-white rounded-md">

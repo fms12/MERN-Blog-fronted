@@ -1,9 +1,9 @@
 // A mock function to mimic making an async request for data
-export function createPost(product) {
+export function createPost(post) {
   return new Promise(async (resolve) => {
     const response = await fetch("http://localhost:8080/api/v1/post/create", {
       method: "POST",
-      body: JSON.stringify(product),
+      body: JSON.stringify(post),
       headers: { "content-type": "application/json" },
       credentials: "include",
     });
