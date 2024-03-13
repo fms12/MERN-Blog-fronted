@@ -53,9 +53,10 @@ export default function Setting() {
                 ))}
               </nav>
             </aside>
-
-            {activeTab === "profile" && <ProfileSetting />}
-            {activeTab === "account" && <AccountSetting />}
+            <div className="space-y-6 sm:px-6 lg:col-span-9 lg:px-0">
+              {activeTab === "profile" && <ProfileSetting />}
+              {activeTab === "account" && <AccountSetting />}
+            </div>
           </div>
         </main>
       </div>

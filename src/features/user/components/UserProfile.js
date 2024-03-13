@@ -3,6 +3,8 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import { useSelector } from 'react-redux';
+import { selectUserInfo } from '../userSlice';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -14,6 +16,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 function UserProfile() {
+  const userInfo = useSelector(selectUserInfo)
   return (
     <Box sx={{ flexGrow: 1 }}>
       <div className="h-24 bg-indigo-700 sm:h-20 lg:h-28" />
@@ -29,7 +32,7 @@ function UserProfile() {
                         <div className="inline-flex overflow-hidden rounded-full border-4 border-white">
                           <img
                             className="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48"
-                            src="https://images.unsplash.com/photo-1501031170107-cfd33f0cbdcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&h=256&q=80"
+                            src={userInfo?.profilePicture}
                             alt=""
                           />
                         </div>
@@ -39,13 +42,13 @@ function UserProfile() {
                       <div>
                         <div className="flex items-center">
                           <h3 className="text-xl font-bold text-gray-900 sm:text-2xl">
-                            Ashley Porter
+                           {userInfo?.name}
                           </h3>
                           <span className="ml-2.5 inline-block h-2 w-2 flex-shrink-0 rounded-full bg-green-400">
                             <span className="sr-only">Online</span>
                           </span>
                         </div>
-                        <p className="text-sm flex text-gray-500 ">@ashleyporter</p>
+                        <p className="text-sm flex text-gray-500 ">@{userInfo.username}</p>
                       </div>
                       {/* <div className="mt-5 flex flex-wrap space-y-3 sm:space-x-3 sm:space-y-0">
                               <button
@@ -133,14 +136,12 @@ function UserProfile() {
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:ml-6 sm:mt-0">
                         <p>
-                          Enim feugiat ut ipsum, neque ut. Tristique mi id
-                          elementum praesent. Gravida in tempus feugiat netus
-                          enim aliquet a, quam scelerisque. Dictumst in
-                          convallis nec in bibendum aenean arcu.
+                          
+                          {userInfo?.bio}
                         </p>
                       </dd>
                     </div>
-                    <div className="sm:flex sm:px-6 sm:py-5">
+                    {/* <div className="sm:flex sm:px-6 sm:py-5">
                       <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0 lg:w-48">
                         Location
                       </dt>
@@ -163,7 +164,7 @@ function UserProfile() {
                       <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:ml-6 sm:mt-0">
                         <time dateTime="1982-06-23">June 23, 1982</time>
                       </dd>
-                    </div>
+                    </div> */}
                   </dl>
                 </div>
               </div>
@@ -171,10 +172,14 @@ function UserProfile() {
           </Item>
         </Grid>
         <Grid item xs={3}>
-          <Item>xs=4</Item>
+          <Item>
+            
+          </Item>
         </Grid>
         <Grid item xs={7}>
-          <Item>xs=8</Item>
+          <Item>
+            
+          </Item>
         </Grid>
       </Grid>
     </Box>

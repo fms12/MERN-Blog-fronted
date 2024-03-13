@@ -2,18 +2,22 @@ import { Fragment } from "react";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUserInfo } from "../user/userSlice";
 
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "Your Profile", link: "/profile" },
+  { name: "Settings", link: "/setting" },
+  { name: "Sign out", link: "/logout" },
 ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function LoggedNavBar() {
+function UserNavBar() {
+  const userInfo = useSelector(selectUserInfo)
   return (
     <div>
       <Popover
@@ -31,13 +35,13 @@ function LoggedNavBar() {
               <div className="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12">
                 <div className="flex md:absolute md:inset-y-0 md:left-0 lg:static xl:col-span-2">
                   <div className="flex flex-shrink-0 items-center">
-                    <a href="#">
+                    <Link to={"/"}>
                       <img
                         className="block h-8 w-auto"
                         src="https://tailwindui.com/img/logos/mark.svg?color=rose&shade=500"
                         alt="Your Company"
                       />
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
@@ -117,15 +121,15 @@ function LoggedNavBar() {
                         {userNavigation.map((item) => (
                           <Menu.Item key={item.name}>
                             {({ active }) => (
-                              <a
-                                href={item.href}
+                              <Link 
+                                to={item.link}
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block px-4 py-2 text-sm text-gray-700"
                                 )}
                               >
                                 {item.name}
-                              </a>
+                              </Link>
                             )}
                           </Menu.Item>
                         ))}
@@ -133,12 +137,12 @@ function LoggedNavBar() {
                     </Transition>
                   </Menu>
 
-                  <a
-                    href="#"
+                  <Link
+                    to={"/create-post"}
                     className="ml-6 inline-flex items-center rounded-md bg-rose-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
                   >
                     New Post
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -189,24 +193,24 @@ function LoggedNavBar() {
                 </div>
                 <div className="mx-auto mt-3 max-w-3xl space-y-1 px-2 sm:px-4">
                   {userNavigation.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.link}
                       className="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
 
               <div className="mx-auto mt-6 max-w-3xl px-4 sm:px-6">
-                <a
-                  href="#"
+                <Link
+                  to={"/create-post"}
                   className="flex w-full items-center justify-center rounded-md border border-transparent bg-rose-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-rose-700"
                 >
                   New Post
-                </a>
+                </Link>
 
                 <div className="mt-6 flex justify-center">
                   <a
@@ -225,4 +229,4 @@ function LoggedNavBar() {
   );
 }
 
-export default LoggedNavBar;
+export default UserNavBar;

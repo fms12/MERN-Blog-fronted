@@ -1,65 +1,99 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import './App.css';
-import Login from './features/auth/components/Login';
-import SignUp from './features/auth/components/SignUp';
-import PageNotFound from './pages/PageNotFound';
-import HomeScreen from './pages/HomeScreen';
-import LoggedNavBar from './features/navbar/LoggedNavBar';
-import Example from './Example';
-import UserProfile from './features/user/components/UserProfile';
-import Setting from './features/user/components/Setting';
-import CreatePost from './features/post/components/CreatePost';
-import PostDetails from './features/post/components/PostDetails';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import "./App.css";
+import Login from "./features/auth/components/Login";
+import SignUp from "./features/auth/components/SignUp";
+import PageNotFound from "./pages/PageNotFound";
+import HomeScreen from "./pages/HomeScreen";
+// import LoggedNavBar from "./features/navbar/LoggedNavBar";
+import Example from "./Example";
+import UserProfile from "./features/user/components/UserProfile";
+import Setting from "./features/user/components/Setting";
+import CreatePost from "./features/post/components/CreatePost";
+import PostDetails from "./features/post/components/PostDetails";
+import PostFeedPage from "./pages/PostFeedPage";
+import { useDispatch, useSelector } from "react-redux";
+import { selectLoggedInUser } from "./features/auth/authSlice";
+import { fetchLoggedInUserAsync } from "./features/user/userSlice";
+import { useEffect } from "react";
+import Protected from "./features/auth/components/Protected";
+import Logout from "./features/auth/components/Logout";
+import { fetchPostByFiltersAsync } from "./features/post/postSlice";
 
 const router = createBrowserRouter([
   {
-    path:"/",
-    element: <HomeScreen />
+    path: "/",
+    element: <HomeScreen />,
+    children: [
+      {
+        path: "/create-post",
+        element: (
+          <Protected>
+            <CreatePost />
+          </Protected>
+        ),
+      },
+      {
+        path:"/setting",
+        element: (
+          <Protected >
+            <Setting />
+          </Protected>
+        )
+      },
+      {
+        path:"/profile",
+        element: (
+          <Protected >
+            <UserProfile />
+          </Protected>
+        )
+      },
+      {
+        path:"/logout",
+        element: (
+          <Protected >
+            <Logout />
+          </Protected>
+        )
+      },
+      {
+        path: "/post-detail/:slug",
+        element: <PostDetails />,
+      },
+      {
+        path: "",
+        element: <PostFeedPage />,
+      },
+    ],
   },
   {
-    path:"/create-post",
-    element: <CreatePost />
-  },
-  {
-    path:"/post",
-    element: <PostDetails />
-  },
-  {
-    path:"/global",
-    element: <LoggedNavBar />
-  },
-
-  {
-    path :"/login",
-    element: <Login />
+    path: "/login",
+    element: <Login />,
   },
   {
     path: "/signup",
-    element: <SignUp />
+    element: <SignUp />,
   },
-  {
-    path: "/profile",
-    element: <UserProfile />
-  },
-  {
-    path: "/setting",
-    element: <Setting />
-  },
-  {
-    path: "/ex",
-    element: <Example />
-  },
-  
   {
     path: "*",
-    element:<PageNotFound />
-  }
-]
- );
+    element: <PageNotFound />,
+  },
+]);
 function App() {
+  const dispatch = useDispatch();
+  const user = useSelector(selectLoggedInUser);
+    useEffect(() => {
+      dispatch(fetchPostByFiltersAsync());
+    }, [dispatch]);
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchLoggedInUserAsync());
+    }
+  },[user,dispatch]);
+
   return (
     <div className="App">
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </div>
   );
 }
