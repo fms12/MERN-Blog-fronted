@@ -27,7 +27,7 @@ export const fetchCommentBySlugAsync = createAsyncThunk(
   async (slug) => {
     const response = await fetchCommentBySlug(slug);
     // The value we return becomes the `fulfilled` action payload
-    return response.data.data;
+    return response.data;
   }
 );
 
@@ -52,7 +52,7 @@ export const commentSlice = createSlice({
       })
       .addCase(fetchCommentBySlugAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.comments = action.payload;
+        state.comments = action.payload.data;
       });
   },
 });

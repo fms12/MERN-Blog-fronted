@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 
 function CommentSection() {
   const userInfo = useSelector(selectLoggedInUser);
+
+  const comments = useSelector(selectAllComments);
   const dispatch = useDispatch();
   const { slug } = useParams();
   const {
@@ -23,8 +25,6 @@ function CommentSection() {
     dispatch(createCommentAsync({ comment, slug }));
     reset();
   };
-
-  const comments = useSelector(selectAllComments);
   return (
     <section className="border-t-[0.5px] border-gray-400 mt-2 p-4 max-w-2xl mx-auto">
       <div className="max-w-2xl mx-auto px-4">

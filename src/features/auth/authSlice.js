@@ -92,45 +92,45 @@ export const authSlice = createSlice({
       })
       .addCase(loginUserAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.loggedInUser = action.payload;
+        state.loggedInUser = action.payload.data;
       })
       .addCase(loginUserAsync.rejected, (state, action) => {
         state.status = "idle";
         state.error = action.payload;
       })
-    .addCase(signOutAsync.pending, (state) => {
-      state.status = "loading";
-    })
-    .addCase(signOutAsync.fulfilled, (state, action) => {
-      state.status = "idle";
-      state.loggedInUser = null;
-    })
-    // .addCase(checkAuthAsync.pending, (state) => {
-    //   state.status = "loading";
-    // })
-    // .addCase(checkAuthAsync.fulfilled, (state, action) => {
-    //   state.status = "idle";
-    //   state.loggedInUserToken = action.payload;
-    //   state.userChecked = true;
-    // })
-    // .addCase(checkAuthAsync.rejected, (state, action) => {
-    //   state.status = "idle";
-    //   state.userChecked = true;
-    // })
-    // .addCase(resetPasswordRequestAsync.pending, (state) => {
-    //   state.status = "loading";
-    // })
-    // .addCase(resetPasswordRequestAsync.fulfilled, (state, action) => {
-    //   state.status = "idle";
-    //   state.mailSent = true;
-    // })
-    .addCase(resetPasswordAsync.pending, (state) => {
-      state.status = "loading";
-    })
-    .addCase(resetPasswordAsync.fulfilled, (state, action) => {
-      state.status = "idle";
-      state.passwordReset = true;
-    })
+      .addCase(signOutAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(signOutAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.loggedInUser = null;
+      })
+      // .addCase(checkAuthAsync.pending, (state) => {
+      //   state.status = "loading";
+      // })
+      // .addCase(checkAuthAsync.fulfilled, (state, action) => {
+      //   state.status = "idle";
+      //   state.loggedInUserToken = action.payload;
+      //   state.userChecked = true;
+      // })
+      // .addCase(checkAuthAsync.rejected, (state, action) => {
+      //   state.status = "idle";
+      //   state.userChecked = true;
+      // })
+      // .addCase(resetPasswordRequestAsync.pending, (state) => {
+      //   state.status = "loading";
+      // })
+      // .addCase(resetPasswordRequestAsync.fulfilled, (state, action) => {
+      //   state.status = "idle";
+      //   state.mailSent = true;
+      // })
+      .addCase(resetPasswordAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(resetPasswordAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.passwordReset = true;
+      });
     // .addCase(resetPasswordAsync.rejected, (state, action) => {
     //   state.status = "idle";
     //   state.error = action.payload;

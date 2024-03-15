@@ -6,10 +6,11 @@ import CustomNavbar from '../features/navbar/CustomNavbar'
 function HomeScreen() {
   return (
     <div>
-        <CustomNavbar />
+      <CustomNavbar />
         <Outlet />
+      
     </div>
-  )
+  );
 }
 
 export default HomeScreen

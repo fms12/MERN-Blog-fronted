@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
+  deletePostAsync,
   fetchPostBySlugAsync,
   selectPostListStatus,
   selectedPostBySlug,
@@ -9,18 +10,49 @@ import {
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import CommentSection from "../../comment/components/CommentSection";
+import {
+  ChatBubbleLeftRightIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
+import { Tooltip } from "@mui/material";
+import {
+  fetchCommentBySlugAsync,
+  selectAllComments,
+} from "../../comment/commentSlice";
+import { PencilSquareIcon } from "@heroicons/react/20/solid";
+import { selectLoggedInUser } from "../../auth/authSlice";
+import Modal from "../../utils/Modal";
 
 function PostDetails() {
   const posts = useSelector(selectedPostBySlug);
   const status = useSelector(selectPostListStatus);
+  const comments = useSelector(selectAllComments);
+  const user = useSelector(selectLoggedInUser);
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { slug } = useParams();
-
+  const [openModal, setOpenModal] = useState(null);
   useEffect(() => {
     dispatch(fetchPostBySlugAsync(slug));
+    dispatch(fetchCommentBySlugAsync(slug));
   }, [dispatch, slug]);
   const isLoadingAndNoPosts =
     status === "loading" && (!posts || posts.length === 0);
+  const handleComments = () => {
+    setOpen(!open);
+  };
+const handleDelete = () => {
+  dispatch(deletePostAsync(slug))
+    .then(() => {
+      // After the post is deleted, navigate to the home page
+      navigate("/"); // Replace '/' with the path to your home page if it's different
+    })
+    .catch((error) => {
+      // Handle any errors that might occur during the deletion
+      console.error("Error deleting post:", error);
+    });
+};
   return (
     <>
       {isLoadingAndNoPosts ? (
@@ -43,21 +75,19 @@ function PostDetails() {
           {posts &&
             posts.map((post) => (
               <div>
-                <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
-                  {post && post?.title} Hello
+                <h1 className="text-3xl mt-10 p-3 font-serif max-w-2xl mx-auto lg:text-4xl font-bold leading-10">
+                  {post && post?.title}
                 </h1>
-                <div
-                  // to={`/search?category=${post && post.category}`}
-                  className="self-center mt-5"
-                >
-                  <div className="flex border-t border-gray-900/5 mt-2">
-                    <div className="relative flex items-center gap-x-2">
+                <div className="mt-10 max-w-2xl mx-auto ">
+                  <div className="flex mt-2 mx-auto">
+                    <div className="relative flex items-center gap-x-2 ">
                       <img
                         src={post?.user?.profilePicture}
                         alt=""
-                        className="h-6 w-6 rounded-full bg-gray-50"
+                        className="h-10 w-10 rounded-full bg-gray-50"
                       />
-                      <div className="text-sm leading-6">
+
+                      <div className="text-sm leading-6 mx-auto gap-x-2">
                         <p className="font-semibold text-gray-900">
                           <a href={post?.user?.href}>
                             <span className="absolute inset-0" />
@@ -66,24 +96,59 @@ function PostDetails() {
                               : post?.user?.username}
                           </a>
                         </p>
-                        {/* <p className="text-gray-600">{post.author.role}</p> */}
+                        <span className="text-xs font-normal text-[#4a4a4a]">
+                          {post &&
+                            new Date(post?.createdAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              }
+                            )}{" "}
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs">
-                  <span>
-                    {post &&
-                      new Date(post?.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                  </span>
-                  <span className="italic">
-                    {post && (post?.content?.length / 1000).toFixed(0)} mins
-                    read
-                  </span>
+                <div className="flex justify-between p-3 border-b border-t border-[#f2f2f2] mx-auto w-full max-w-2xl text-xs mt-10 text-[#737373]">
+                  <div className="flex justify-center items-center cursor-pointer">
+                    <span className="text-xs font-normal text-[#4a4a4a] mr-4">
+                      {post && (post?.content?.length / 1000).toFixed(0)} mins
+                      read
+                    </span>
+                    <Tooltip title="comment" placement="top">
+                      <ChatBubbleLeftRightIcon
+                        className="h-6 w-6 mr-2"
+                        onClick={handleComments}
+                      />
+                    </Tooltip>
+                    {comments?.length}
+                  </div>
+                  {user?.id === post?.user?.id && (
+                    <div className="flex ml-2">
+                      <Link to={`/update/${post?.slug}`}>
+                        <PencilSquareIcon className="h-6 w-6 cursor-pointer mr-2" />
+                      </Link>
+                      <Modal
+                        title={`Delete "${post?.title}" `}
+                        message="Are you sure you want to delete this post ?"
+                        dangerOption="Delete"
+                        cancelOption="Cancel"
+                        dangerAction={() => handleDelete()}
+                        cancelAction={() => setOpenModal(null)}
+                        showModal={openModal === post?.title}
+                      ></Modal>
+                      <button
+                        onClick={(e) => {
+                          setOpenModal(post?.title);
+                        }}
+                      >
+                        
+                        <TrashIcon className="h-6 w-6 cursor-pointer" />
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <img
                   src={post && post.image}
@@ -97,7 +162,7 @@ function PostDetails() {
                 <div className="max-w-4xl mx-auto w-full">
                   {/* <CallToAction /> */}
                 </div>
-                <CommentSection />
+                {open && <CommentSection />}
 
                 {/* <div className="flex flex-col justify-center items-center mb-5">
                   <h1 className="text-xl mt-5">Recent articles</h1>

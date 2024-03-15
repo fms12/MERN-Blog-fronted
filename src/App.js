@@ -33,28 +33,36 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path:"/setting",
+        path: "/update/:slug",
         element: (
-          <Protected >
+          <Protected>
+            <CreatePost />
+          </Protected>
+        ),
+      },
+      {
+        path: "/setting",
+        element: (
+          <Protected>
             <Setting />
           </Protected>
-        )
+        ),
       },
       {
-        path:"/profile",
+        path: "/profile",
         element: (
-          <Protected >
+          <Protected>
             <UserProfile />
           </Protected>
-        )
+        ),
       },
       {
-        path:"/logout",
+        path: "/logout",
         element: (
-          <Protected >
+          <Protected>
             <Logout />
           </Protected>
-        )
+        ),
       },
       {
         path: "/post-detail/:slug",
@@ -82,14 +90,14 @@ const router = createBrowserRouter([
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(selectLoggedInUser);
-    useEffect(() => {
-      dispatch(fetchPostByFiltersAsync());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchPostByFiltersAsync());
+  }, [dispatch]);
   useEffect(() => {
     if (user) {
       dispatch(fetchLoggedInUserAsync());
     }
-  },[user,dispatch]);
+  }, [user, dispatch]);
 
   return (
     <div className="App">

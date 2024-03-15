@@ -1,13 +1,11 @@
 export function createUser(userData) {
   return new Promise(async (resolve) => {
-    const response = await fetch(
-      process.env.REACT_APP_BACKEND_URL + "auth/signup",
-      {
-        method: "POST",
-        body: JSON.stringify(userData),
-        headers: { "content-type": "application/json" },
-      }
-    );
+    const response = await fetch("http://localhost:8080/api/v1/auth/signup", {
+      method: "POST",
+      body: JSON.stringify(userData),
+      headers: { "content-type": "application/json" },
+      credentials: "include",
+    });
     const data = await response.json();
     resolve({ data });
   });

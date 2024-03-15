@@ -50,7 +50,7 @@ export function fetchPostBySlug(slug) {
   });
 }
 
-export function updatePost(update,slug) {
+export function updatePost({ update, slug }) {
   return new Promise(async (resolve) => {
     const response = await fetch(
       "http://localhost:8080/api/v1/post/edit/" + slug,
@@ -61,6 +61,18 @@ export function updatePost(update,slug) {
         credentials: "include",
       }
     );
+    const data = await response.json();
+    resolve({ data });
+  });
+}
+
+export function deletePost(slug) {
+  return new Promise(async (resolve) => {
+    const response = await fetch("http://localhost:8080/api/v1/post/" + slug, {
+      method: "DELETE",
+      headers: { "content-type": "application/json" },
+      credentials: "include",
+    });
     const data = await response.json();
     resolve({ data });
   });
