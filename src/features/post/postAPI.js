@@ -1,12 +1,15 @@
 // A mock function to mimic making an async request for data
 export function createPost(post) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/api/v1/post/create", {
-      method: "POST",
-      body: JSON.stringify(post),
-      headers: { "content-type": "application/json" },
-      credentials: "include",
-    });
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_URL + "post/create",
+      {
+        method: "POST",
+        body: JSON.stringify(post),
+        headers: { "content-type": "application/json" },
+        credentials: "include",
+      }
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -35,7 +38,9 @@ export function fetchPostByFilters() {
   // }
 
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/api/v1/post/getPosts");
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_URL + "post/getPosts"
+    );
     const data = await response.json();
     // const totalItems = await response.headers.get("X-Total-Count");
     resolve({ data });
@@ -44,7 +49,9 @@ export function fetchPostByFilters() {
 
 export function fetchPostBySlug(slug) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/api/v1/post/" + slug);
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_URL + "post/" + slug
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -53,7 +60,7 @@ export function fetchPostBySlug(slug) {
 export function updatePost({ update, slug }) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:8080/api/v1/post/edit/" + slug,
+      process.env.REACT_APP_BACKEND_URL + "post/edit/" + slug,
       {
         method: "PUT",
         body: JSON.stringify(update),
@@ -68,11 +75,14 @@ export function updatePost({ update, slug }) {
 
 export function deletePost(slug) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/api/v1/post/" + slug, {
-      method: "DELETE",
-      headers: { "content-type": "application/json" },
-      credentials: "include",
-    });
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_URL + "post/" + slug,
+      {
+        method: "DELETE",
+        headers: { "content-type": "application/json" },
+        credentials: "include",
+      }
+    );
     const data = await response.json();
     resolve({ data });
   });

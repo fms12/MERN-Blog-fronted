@@ -1,11 +1,14 @@
 export function createUser(userData) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/api/v1/auth/signup", {
-      method: "POST",
-      body: JSON.stringify(userData),
-      headers: { "content-type": "application/json" },
-      credentials: "include",
-    });
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_URL + "auth/signup",
+      {
+        method: "POST",
+        body: JSON.stringify(userData),
+        headers: { "content-type": "application/json" },
+        credentials: "include",
+      }
+    );
     const data = await response.json();
     resolve({ data });
   });
@@ -14,12 +17,15 @@ export function createUser(userData) {
 export function loginUser(loginInfo) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/auth/login", {
-        method: "POST",
-        body: JSON.stringify(loginInfo),
-        headers: { "content-type": "application/json" },
-        credentials: "include",
-      });
+      const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "auth/login",
+        {
+          method: "POST",
+          body: JSON.stringify(loginInfo),
+          headers: { "content-type": "application/json" },
+          credentials: "include",
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         resolve({ data });
@@ -36,7 +42,9 @@ export function loginUser(loginInfo) {
 export function signOut(userId) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/auth/logout");
+      const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "auth/logout"
+      );
       if (response.ok) {
         resolve({ data: "success" });
       } else {
@@ -53,7 +61,7 @@ export function signOut(userId) {
 export function resetPassword(data) {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/auth", {
+      const response = await fetch(process.env.REACT_APP_BACKEND_URL + "auth", {
         method: "POST",
         body: JSON.stringify(data),
         headers: { "content-type": "application/json" },

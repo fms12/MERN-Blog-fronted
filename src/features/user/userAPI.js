@@ -8,10 +8,13 @@
 export function fetchLoggedInUser() {
   return new Promise(async (resolve, reject) => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/users/own", {
-        method: "GET",
-        credentials: "include", // Include this line to send cookies with the request
-      });
+      const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "users/own",
+        {
+          method: "GET",
+          credentials: "include", // Include this line to send cookies with the request
+        }
+      );
       if (!response.ok) {
         const errorData = await response.json();
         reject(errorData);
@@ -27,12 +30,15 @@ export function fetchLoggedInUser() {
 }
 export function updateUser(update) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:8080/api/v1/users/update", {
-      method: "PUT",
-      body: JSON.stringify(update),
-      headers: { "content-type": "application/json" },
-      credentials: "include",
-    });
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_URL + "users/update",
+      {
+        method: "PUT",
+        body: JSON.stringify(update),
+        headers: { "content-type": "application/json" },
+        credentials: "include",
+      }
+    );
     const data = await response.json();
     resolve({ data });
   });
