@@ -22,7 +22,11 @@ export function loginUser(loginInfo) {
         {
           method: "POST",
           body: JSON.stringify(loginInfo),
-          headers: { "content-type": "application/json" },
+          headers: {
+            "content-type": "application/json",
+            "Access-Control-Allow-Origin":
+              "https://mern-blog-fronted.vercel.app/",
+          },
           credentials: "include",
         }
       );
