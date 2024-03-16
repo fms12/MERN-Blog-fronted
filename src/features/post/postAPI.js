@@ -38,7 +38,9 @@ export function fetchPostByFilters() {
   // }
 
   return new Promise(async (resolve) => {
-    const response = await fetch("/post/getPosts");
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_URL + "post/getPosts"
+    );
     const data = await response.json();
     // const totalItems = await response.headers.get("X-Total-Count");
     resolve({ data });

@@ -9,7 +9,7 @@ export function fetchLoggedInUser() {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await fetch(
-      "/users/own",
+        process.env.REACT_APP_BACKEND_URL + "users/own",
         {
           method: "GET",
           credentials: "include", // Include this line to send cookies with the request
