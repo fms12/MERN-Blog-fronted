@@ -31,12 +31,17 @@ export default function Navbar() {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
+                <div className="flex flex-shrink-0 items-center z-10">
+                  <Link to={"/"} className="flex justify-center items-center">
+                    <img
+                      className="h-10 w-auto "
+                      src="https://tailwindui.com/img/logos/mark.svg?color=white"
+                      alt=""
+                    />
+                    <span className="font-extrabold text-xl  px-2 text-white">
+                      Blog
+                    </span>
+                  </Link>
                 </div>
               </div>
               <div className="flex items-center z-10">
