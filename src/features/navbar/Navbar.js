@@ -1,6 +1,6 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Header from "../utils/Header";
 
 const navigation = [
@@ -13,6 +13,8 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const {slug} = useParams();
+
   return (
     <div className="">
       <Disclosure as="nav" className="bg-gray-800 z-20">
@@ -114,7 +116,7 @@ export default function Navbar() {
           </>
         )}
       </Disclosure>
-      <Header />
+      {!slug ? <Header /> : null}
     </div>
   );
 }
